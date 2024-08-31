@@ -3,7 +3,7 @@ import json
 
 
 def instance_linking(config):
-    curseforge_folder = os.path.join(os.environ['USERPROFILE'], 'curseforge/minecraft')
+    curseforge_folder = os.path.join(os.environ['USERPROFILE'], 'curseforge/minecraft').replace('\\', '/')
     curseforge_instances_folder = os.path.join(curseforge_folder, 'Instances')
     multimc_instances_folder = config['multimc_instances_folder']
     multimc_icons = os.path.join(config['multimc_folder'], 'icons')
@@ -16,7 +16,6 @@ def instance_linking(config):
         print(f'{instance_i}. {instance}')
         instances_dict[f"{instance_i}"] = instance
         instance_i += 1
-
 
     def instance_linking(folder):
         print(folder)
@@ -34,16 +33,16 @@ def instance_linking(config):
         version = f"{manifest['version']}"
         pack_properties = {
             "components": [
-            {
-                "cachedName": "Minecraft",
-                "cachedVersion": version,
-                "important": True,
-                "uid": "net.minecraft",
-                "version": version
+                {
+                    "cachedName": "Minecraft",
+                    "cachedVersion": version,
+                    "important": True,
+                    "uid": "net.minecraft",
+                    "version": version
                 }
             ],
             "formatVersion": 1
-        }   
+        }
         match modloader:
             case 'forge':
                 modloader = 'Forge'
@@ -92,13 +91,12 @@ def instance_linking(config):
         else:
             java = curseforge_folder + '/Install/runtime/java-runtime-delta/windows-x64/java-runtime-delta/bin/javaw.exe'
         cfg_properties = f'''InstanceType=OneSix
-    JavaPath={java}
-    OverrideJavaLocation=true
-    iconKey=curseforge
-    name={folder}'''
+JavaPath={java}
+OverrideJavaLocation=true
+iconKey=curseforge
+name={folder}'''
         with open(os.path.join(instance_folder, 'instance.cfg'), 'x', encoding='utf-8') as cfg:
             cfg.write(cfg_properties)
-
 
     exit = False
     while not exit:
